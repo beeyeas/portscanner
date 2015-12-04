@@ -11,7 +11,6 @@ import (
 	log "github.com/Sirupsen/logrus"
 )
 
-
 type PortScannerConfig struct {
 	Portrange string
 	Ipaddress string
@@ -42,15 +41,12 @@ func main() {
 	}()
 
 	log.Debugln(loadConfig("config.properties"))
-	
-
-	
 
 	log.Debugln("Parsed input data ", len(portScannerTuple.portScannerResult))
 	CheckPort(&portScannerTuple)
 
 	for key, value := range portScannerTuple.portScannerResult {
-		if (value){
+		if value {
 			log.Debugln("Port Scanner Result", key, " port is open :", value)
 		}
 	}
@@ -93,17 +89,17 @@ func loadConfig(file string) PortScannerConfig {
 	if metaData, err := toml.DecodeFile(file, &readConfigStruct); err != nil {
 		log.Debugln("Error Occured Reading file", err, metaData)
 	}
-	ports := strings.Split(readConfigStruct.Portrange,"-")
+	ports := strings.Split(readConfigStruct.Portrange, "-")
 	p1, err := strconv.Atoi(ports[0])
-    if err != nil {
-        log.Errorln(err)
-    }
-	log.Debugln("p1",p1)
+	if err != nil {
+		log.Errorln(err)
+	}
+	log.Debugln("p1", p1)
 	p2, err := strconv.Atoi(ports[1])
-    if err != nil {
-        log.Errorln(err)
-    }
-	log.Debugln("p2",p2)
+	if err != nil {
+		log.Errorln(err)
+	}
+	log.Debugln("p2", p2)
 	portScannerTuple.portScannerResult = make(portScannerResultMap)
 	for port := p1; port <= p2; port++ {
 		portScannerTuple.timeOut = 5
